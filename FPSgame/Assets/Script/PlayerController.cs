@@ -12,20 +12,22 @@ public class PlayerController : MonoBehaviour {
 	private Transform CameraTransform;
 	private float ii;
 	public GameObject ray;
-
-	// Use this for initialization
+    
 	void Start () {
 
 		PlayerTransform = transform.parent;
 		CameraTransform = GetComponent<Transform>();
 
+        //マウスカーソルを消す
 		Cursor.visible = false;
+
+        //マウスカーソルをロックする
 		Cursor.lockState = CursorLockMode.Locked;
 	}
-
-	// Update is called once per frame
+    
+    //マウスで視点移動
 	void Update () {
-		//Controller ();
+
 		float X_Rotation = Input.GetAxis ("Mouse X");
 		float Y_Rotation = Input.GetAxis ("Mouse Y");
 		PlayerTransform.transform.Rotate (0, X_Rotation, 0);

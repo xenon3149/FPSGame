@@ -17,35 +17,42 @@ public class hookshoot : MonoBehaviour {
 	public GameObject Shot;
 	Vector3 force;
 	Rigidbody rg;
-	// Use this for initialization
+
+
 	void Start () {
 		rg = Player.GetComponent<Rigidbody>();
 		Image image = GetComponent<Image>();
 	}
 	
-	// Update is called once per frame
+    
 	void Update () {
 		hook_throw ();
-		//Debug.DrawRay (Camera.main.transform.position,Camera.main.transform.forward* 100,Color.red);
 		Debug.DrawRay (transform.position,transform.forward* RayLong,Color.red);
-		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, RayLong)){
+
+        //Rayがオブジェクトに当たったらレティクルの色を青に変える
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, RayLong)){
 			Reticle.GetComponent<RawImage>().color =  new Color(0.0f, 0.0f, 1.0f);
-		} else {
+		}
+
+        ////Rayがオブジェクトに当たったらレティクルの色を赤に変える
+        else
+        {
 			Reticle.GetComponent<RawImage>().color = new Color(1.0f, 0.0f, 0.0f);
 		}
 	}
 
+    //フックショットのリキャスト
 	void hook_throw() {
 		if (Input.GetKeyDown (KeyCode.E) && judg_hook == true) {
 			if (Physics.Raycast (Camera.main.transform.position, Camera.main.transform.forward, out hit, RayLong)) {
 				image.fillAmount = 0;
-				//Player.transform.position = hit.point;
 				StartCoroutine(hook_transport(hit));
 				StartCoroutine (wait_hook());
 			}
 		}
 	}
 
+    //フックショットのリキャストUIの動き
 	IEnumerator wait_hook() {
 		judg_hook = false;
 		for (int i = 0; 1 > image.fillAmount; image.fillAmount += Time.deltaTime / 2) {
@@ -61,6 +68,8 @@ public class hookshoot : MonoBehaviour {
 		_shot.transform.position = hook.transform.position;
 		Vector3 rad = hook.transform.forward;
 		Shot.SetActive(false);
+
+        //ヒットポイントにフックショットを飛ばす
 		while( 1 < Vector3.Distance(a.point, _shot.transform.position)){
 			chain.SetActive (true);
 			chain.transform.LookAt (a.point);
@@ -72,6 +81,8 @@ public class hookshoot : MonoBehaviour {
 			_chain.transform.LookAt(a.point);
 			yield return null;
 		}
+
+        //ヒットポイントにプレイヤーを移動させる
 		while (10 < Vector3.Distance(a.point, Player.transform.position)) {
 			Vector3 t = a.point - Player.transform.position;
 			t.Normalize();

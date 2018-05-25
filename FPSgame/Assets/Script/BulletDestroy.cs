@@ -4,16 +4,7 @@ using UnityEngine;
 
 public class BulletDestroy : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
+	//何かに当たったら弾を消す
 	private void OnTriggerEnter(Collider other ) {
 		Destroy (this.gameObject);
 	}
